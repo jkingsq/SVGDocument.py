@@ -51,7 +51,7 @@ class SVGDocument(ET.ElementTree):
         """Set the stroke (outline) color to be used in objects subsequently added to
         the document
         """
-        self.strokeColor = clipColor((r, g, b))
+        self.strokeColor = rgbToHex((r, g, b))
 
     def setStrokeWidth(self, width):
         """Set the stroke (outline) width to be used in objects subsequently added to
@@ -70,6 +70,12 @@ class SVGDocument(ET.ElementTree):
         document
         """
         self.fillColor = rgbToHex((r, g, b))
+
+    def setFillOpacity(self, opacity):
+        """Set the fill opacity to be used in objects subsequently added to the
+        document
+        """
+        self.fillOpacity = float(clip(0.0, opacity, 1.0))
 
     def addCircle(self, center, radius):
         """Add a circle to the document.
@@ -97,13 +103,14 @@ class SVGDocument(ET.ElementTree):
             attrib["points"] += "{},{} ".format(x, y)
         self.addElement("polygon", attrib)
 
+    def addPolyLine(self, points):
         """Add a polyline to the document.
         Fill color and opacity WILL affect output and the image
         Args:
             an array of (x, y) tuples representing the vertices
         """
-    def addPolyLine(self, points):
         attrib = self.attribsTemplate()
+        attrib["points"] = ""
         for point in points:
             x, y = point
             x = float(x)
