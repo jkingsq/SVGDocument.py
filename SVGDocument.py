@@ -23,8 +23,9 @@ def rgbToHex(color: Tuple[Number, Number, Number]):
     return "#%02x%02x%02x" % clipColor(color)
 
 class SVGPath:
-    # "movements" are of the form (char, [points])
-    movements = []
+    def __init__(self):
+        # "movements" are of the form (char, [points])
+        self.movements = []
 
     # make path string for a single SVGPath gesture
     def movementString(self, move: Tuple[str, Sequence[Number]]):
